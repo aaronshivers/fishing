@@ -19,5 +19,5 @@ const options = {
 
 module.exports = async () => {
   const conn = await mongoose.connect(url, options)
-  console.log(`MongoDB Connected: ${ conn.connection.host }`)
+  console.log(`MongoDB Connected: ${ conn.connection.host }`.cyan.underline.bold)
 }

@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const connectDB = require('./db/mongoose')
+const colors =  require('colors')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -22,11 +23,12 @@ app.use('/api/v1/locations', locationsRoutes)
 // connect to server
 const server = app.listen(
   PORT, () => {
-    console.log(`Server running in ${ environment } mode on port ${ PORT }`)
+    console.log(`Server running in ${ environment } mode on port ${ PORT }`.yellow.bold)
   },
 )
 
+// handle rejection errors
 process.on('unhandledRejection', (error) => {
-  console.log(`Error: ${ error.message }`)
+  console.log(`Error: ${ error.message }.red`)
   server.close(() => process.exit(1))
 })
