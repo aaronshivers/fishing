@@ -1,7 +1,6 @@
-// const mongoose = require('mongoose')
-const Schema = require('mongoose')
+const mongoose = require('mongoose')
 
-const LocationSchema = new Schema({
+module.exports = LocationSchema = new mongoose.Schema({
     name: {
       type: String,
       required: [ true, 'Please add a name' ],
@@ -99,3 +98,6 @@ const LocationSchema = new Schema({
     },
   },
 )
+
+module.exports = mongoose.model('Location', LocationSchema)
+

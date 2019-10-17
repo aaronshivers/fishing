@@ -1,3 +1,5 @@
+const Location = require('../models/Locations')
+
 // @desc    Get all locations
 // @route   GET /api/v1/locations
 // @access  Public
@@ -29,15 +31,18 @@ exports.getLocation = (req, res, next) => {
 // @desc    Create new location
 // @route   POST /api/v1/locations
 // @access  Private
-exports.createLocation = (req, res, next) => {
-  res
-    .status(200)
-    .json({
+exports.createLocation = async (req, res, next) => {
+  try {
+    const location = await Location.create(req.body)
+
+    res.status(201).json({
       success: true,
-      data: {
-        msg: 'create new location',
-      },
+      data: location,
     })
+  } catch (e) {
+    res.status(400).json({ success: false })
+  }
+
 }
 
 // @desc    Update location

@@ -11,13 +11,15 @@ const environment = process.env.NODE_ENV
 
 const locationsRoutes = require('./routes/locations')
 
-// log during development mode
-if (environment === 'development') app.use(morgan('dev'))
-
 // connect to database
 connectDB()
 
-// middleware
+app.use(express.json())
+
+// log during development mode
+if (environment === 'development') app.use(morgan('dev'))
+
+// mount locations routes
 app.use('/api/v1/locations', locationsRoutes)
 
 // connect to server
