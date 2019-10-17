@@ -1,69 +1,22 @@
 const express = require('express')
 const router = express.Router()
+const {
+  getLocation,
+  getLocations,
+  createLocation,
+  updateLocation,
+  deleteLocation,
+} = require('../controllers/locations')
 
-// GET /
-router.get('/', ((req, res) => {
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: {
-          msg: 'Show all locations',
-        },
-      })
-  }),
-)
+router
+  .route('/')
+  .get(getLocations)
+  .post(createLocation)
 
-// GET /:id
-router.patch('/:id', ((req, res) => {
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: {
-          msg: `get location with id: ${ req.params.id }`,
-        },
-      })
-  }),
-)
-
-// POST /
-router.post('/', ((req, res) => {
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: {
-          msg: 'create new location',
-        },
-      })
-  }),
-)
-
-// PATCH /
-router.patch('/:id', ((req, res) => {
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: {
-          msg: `update location ${ req.params.id }`,
-        },
-      })
-  }),
-)
-
-// DELETE /:id
-router.post('/:id', ((req, res) => {
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: {
-          msg: `delete location with id: ${ req.params.id }`,
-        },
-      })
-  }),
-)
+router
+  .route('/:id')
+  .get(getLocation)
+  .patch(updateLocation)
+  .delete(deleteLocation)
 
 module.exports = router
