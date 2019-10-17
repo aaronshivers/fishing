@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const validateObjectId = require('../middleware/validateObjectId')
 const {
   getLocation,
   getLocations,
@@ -7,6 +8,7 @@ const {
   updateLocation,
   deleteLocation,
 } = require('../controllers/locations')
+const { ObjectId } = require('mongodb')
 
 router
   .route('/')
@@ -14,6 +16,7 @@ router
   .post(createLocation)
 
 router
+  .all('/:id', validateObjectId)
   .route('/:id')
   .get(getLocation)
   .patch(updateLocation)

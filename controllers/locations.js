@@ -3,29 +3,41 @@ const Location = require('../models/Locations')
 // @desc    Get all locations
 // @route   GET /api/v1/locations
 // @access  Public
-exports.getLocations = (req, res, next) => {
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: {
-        msg: 'Show all locations',
-      },
-    })
+exports.getLocations = async (req, res, next) => {
+  try {
+    const locations = await Location.find()
+
+    res.status(200).json({ success: true, data: locations })
+  } catch (e) {
+    res.status(400).json({ success: false })
+  }
 }
 
 // @desc    Get single location
 // @route   GET /api/v1/locations/:id
 // @access  Public
-exports.getLocation = (req, res, next) => {
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: {
-        msg: `get location with id: ${ req.params.id }`,
-      },
-    })
+exports.getLocation = async (req, res, next) => {
+
+  try {
+
+    // get location id
+    const { id } = req.params
+
+    // get location by id
+    const location = await Location.findById(id)
+
+    // return 404 if location is not found
+    if (!location) return res.status(404).json({ success: false })
+
+    // return location data
+    res.status(200).json({ success: true, data: location })
+
+  } catch (e) {
+
+    // return 400 on error
+    res.status(400).json({ success: false })
+  }
+
 }
 
 // @desc    Create new location
