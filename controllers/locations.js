@@ -1,3 +1,4 @@
+const ErrorResponse = require('../utils/errorResponse')
 const Location = require('../models/Locations')
 
 // @desc    Get all locations
@@ -21,26 +22,28 @@ exports.getLocations = async (req, res, next) => {
 // @route   GET /api/v1/locations/:id
 // @access  Public
 exports.getLocation = async (req, res, next) => {
+  // get location id
+  const { id } = req.params
 
   try {
-
-    // get location id
-    const { id } = req.params
 
     // get location by id
     const location = await Location.findById(id)
 
     // return 404 if location is not found
-    if (!location) return res.status(404).json({ success: false })
+    if (!location) {
+      return next(
+        new ErrorResponse(`Location not found with id of ${ id }`, 404)
+      )
+    }
 
     // return location data
-    res.status(200).json({ success: true, data: location })
+    return res.status(200).json({ success: true, data: location })
 
   } catch (e) {
 
     // return 400 on error
-    // res.status(400).json({ success: false })
-    next(e)
+    next(new ErrorResponse(`Error`, 400))
   }
 
 }
