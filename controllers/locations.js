@@ -1,14 +1,17 @@
 const Location = require('../models/Locations')
-const Joi = require('@hapi/joi')
 
 // @desc    Get all locations
 // @route   GET /api/v1/locations
 // @access  Public
-exports.getLocations = async (req, res, next) => {
+exports.getLocations = async (req, res) => {
   try {
     const locations = await Location.find()
 
-    res.status(200).json({ success: true, data: locations })
+    res.status(200).json({
+      success: true,
+      count: locations.length,
+      data: locations,
+    })
   } catch (e) {
     res.status(400).json({ success: false })
   }
@@ -17,7 +20,7 @@ exports.getLocations = async (req, res, next) => {
 // @desc    Get single location
 // @route   GET /api/v1/locations/:id
 // @access  Public
-exports.getLocation = async (req, res, next) => {
+exports.getLocation = async (req, res) => {
 
   try {
 
@@ -44,7 +47,8 @@ exports.getLocation = async (req, res, next) => {
 // @desc    Create new location
 // @route   POST /api/v1/locations
 // @access  Private
-exports.createLocation = async (req, res, next) => {
+exports.createLocation = async (req, res) => {
+
   try {
     const location = await Location.create(req.body)
 
@@ -57,13 +61,12 @@ exports.createLocation = async (req, res, next) => {
     // return 400 on error
     res.status(400).json({ success: false })
   }
-
 }
 
 // @desc    Update location
 // @route   PATCH /api/v1/locations/:id
 // @access  Private
-exports.updateLocation = async (req, res, next) => {
+exports.updateLocation = async (req, res) => {
 
   try {
     // get location id
@@ -76,10 +79,10 @@ exports.updateLocation = async (req, res, next) => {
     const location = await Location.findByIdAndUpdate(_id, data)
 
     // return 400 if location was not updated
-    if (!location) return res.status(400).json({success: false})
+    if (!location) return res.status(400).json({ success: false })
 
     // return data
-    return res.status(200).json({success: true, location})
+    return res.status(200).json({ success: true, location })
 
   } catch (e) {
 
@@ -91,13 +94,24 @@ exports.updateLocation = async (req, res, next) => {
 // @desc    Delete location
 // @route   DELETE /api/v1/locations/:id
 // @access  Private
-exports.deleteLocation = async (req, res, next) => {
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: {
-        msg: `delete location ${ req.params.id }`,
-      },
-    })
+exports.deleteLocation = async (req, res) => {
+
+  try {
+    // get location id
+    const { id } = req.params
+
+    // update location
+    const location = await Location.findByIdAndDelete(id)
+
+    // return 400 if location was not found
+    if (!location) return res.status(400).json({ success: false })
+
+    // return data
+    return res.status(200).json({ success: true, location })
+
+  } catch (e) {
+
+    // return 400 on error
+    res.status(400).json({ success: false })
+  }
 }
