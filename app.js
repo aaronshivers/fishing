@@ -3,7 +3,8 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const connectDB = require('./db/mongoose')
-const colors =  require('colors')
+const errorHandler = require('./middleware/error')
+require('colors')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -14,6 +15,7 @@ const locationsRoutes = require('./routes/locations')
 // connect to database
 connectDB()
 
+// body parser
 app.use(express.json())
 
 // log during development mode
@@ -21,6 +23,7 @@ if (environment === 'development') app.use(morgan('dev'))
 
 // mount locations routes
 app.use('/api/v1/locations', locationsRoutes)
+app.use(errorHandler)
 
 // connect to server
 const server = app.listen(

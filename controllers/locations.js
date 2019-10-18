@@ -3,7 +3,7 @@ const Location = require('../models/Locations')
 // @desc    Get all locations
 // @route   GET /api/v1/locations
 // @access  Public
-exports.getLocations = async (req, res) => {
+exports.getLocations = async (req, res, next) => {
   try {
     const locations = await Location.find()
 
@@ -13,14 +13,14 @@ exports.getLocations = async (req, res) => {
       data: locations,
     })
   } catch (e) {
-    res.status(400).json({ success: false })
+    next(e)
   }
 }
 
 // @desc    Get single location
 // @route   GET /api/v1/locations/:id
 // @access  Public
-exports.getLocation = async (req, res) => {
+exports.getLocation = async (req, res, next) => {
 
   try {
 
@@ -39,7 +39,8 @@ exports.getLocation = async (req, res) => {
   } catch (e) {
 
     // return 400 on error
-    res.status(400).json({ success: false })
+    // res.status(400).json({ success: false })
+    next(e)
   }
 
 }
@@ -47,7 +48,7 @@ exports.getLocation = async (req, res) => {
 // @desc    Create new location
 // @route   POST /api/v1/locations
 // @access  Private
-exports.createLocation = async (req, res) => {
+exports.createLocation = async (req, res, next) => {
 
   try {
     const location = await Location.create(req.body)
@@ -66,7 +67,7 @@ exports.createLocation = async (req, res) => {
 // @desc    Update location
 // @route   PATCH /api/v1/locations/:id
 // @access  Private
-exports.updateLocation = async (req, res) => {
+exports.updateLocation = async (req, res, next) => {
 
   try {
     // get location id
@@ -94,7 +95,7 @@ exports.updateLocation = async (req, res) => {
 // @desc    Delete location
 // @route   DELETE /api/v1/locations/:id
 // @access  Private
-exports.deleteLocation = async (req, res) => {
+exports.deleteLocation = async (req, res, next) => {
 
   try {
     // get location id
