@@ -1,4 +1,5 @@
 const Location = require('../models/Locations')
+const Joi = require('@hapi/joi')
 
 // @desc    Get all locations
 // @route   GET /api/v1/locations

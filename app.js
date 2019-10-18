@@ -31,6 +31,6 @@ const server = app.listen(
 
 // handle rejection errors
 process.on('unhandledRejection', (error) => {
-  console.log(`Error: ${ error.message }.red`)
+  console.log(`Error: ${ error.message }`.red)
   server.close(() => process.exit(1))
 })
