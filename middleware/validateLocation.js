@@ -1,9 +1,18 @@
 const Joi = require('@hapi/joi')
 
-const schema = Joi.object.keys({
-  name: Joi.string().trim().alphanum().max(50).required()
-})
+const locationValidator = async location => {
 
-module.exports = locationValidator => location => Joi.validate(location, schema)
+  const schema = Joi.string()
 
+  schema.validate(location.name)
 
+  try {
+    console.log('asdfasdfasdfasdfadsfadsfasdf')
+    return await schema.validateAsync(location.name)
+  } catch (e) {
+    console.log(e.message)
+    return e
+  }
+}
+
+module.exports = locationValidator

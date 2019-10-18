@@ -73,7 +73,6 @@ exports.updateLocation = async (req, res, next) => {
 
     // update location
     const location = await Location.findByIdAndUpdate(_id, data)
-    console.log(location)
 
     // return 400 if location was not updated
     if (!location) return res.status(400).json({success: false})
