@@ -8,7 +8,6 @@ const {
   updateLocation,
   deleteLocation,
 } = require('../controllers/locations')
-const { ObjectId } = require('mongodb')
 
 router
   .route('/')

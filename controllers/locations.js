@@ -52,6 +52,8 @@ exports.createLocation = async (req, res, next) => {
       data: location,
     })
   } catch (e) {
+
+    // return 400 on error
     res.status(400).json({ success: false })
   }
 
@@ -60,21 +62,36 @@ exports.createLocation = async (req, res, next) => {
 // @desc    Update location
 // @route   PATCH /api/v1/locations/:id
 // @access  Private
-exports.updateLocation = (req, res, next) => {
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: {
-        msg: `update location ${ req.params.id }`,
-      },
-    })
+exports.updateLocation = async (req, res, next) => {
+
+  try {
+    // get location id
+    const _id = req.params.id
+
+    // get update data
+    const data = req.body
+
+    // update location
+    const location = await Location.findByIdAndUpdate(_id, data)
+    console.log(location)
+
+    // return 400 if location was not updated
+    if (!location) return res.status(400).json({success: false})
+
+    // return data
+    return res.status(200).json({success: true, location})
+
+  } catch (e) {
+
+    // return 400 on error
+    res.status(400).json({ success: false })
+  }
 }
 
 // @desc    Delete location
 // @route   DELETE /api/v1/locations/:id
 // @access  Private
-exports.deleteLocation = (req, res, next) => {
+exports.deleteLocation = async (req, res, next) => {
   res
     .status(200)
     .json({

@@ -20,6 +20,7 @@
     "mongodb": "latest"
   },
   "devDependencies": {
+    "@hapi/joi": "^16.1.7",
     "nodemon": "^1.19.4"
   }
 }

@@ -53,16 +53,17 @@ module.exports = LocationSchema = new mongoose.Schema({
       zipCode: String,
       country: String,
     },
-    careers: {
+    fish: {
       // Array of strings
       type: [ String ],
       required: true,
       enum: [
-        'Web Development',
-        'Mobile Development',
-        'UI/UX',
-        'Data Science',
-        'Business',
+        'Black Bass',
+        'Catfish',
+        'Crappie',
+        'Sunfish',
+        'Walleye/Sauger',
+        'White Bass',
         'Other',
       ],
     },
@@ -76,19 +77,19 @@ module.exports = LocationSchema = new mongoose.Schema({
       type: String,
       default: 'no-photo.jpg',
     },
-    housing: {
+    camping: {
       type: Boolean,
       default: false,
     },
-    jobAssistance: {
+    boatLanding: {
       type: Boolean,
       default: false,
     },
-    jobGuarantee: {
+    fishingDock: {
       type: Boolean,
       default: false,
     },
-    acceptGi: {
+    disabledAccessible: {
       type: Boolean,
       default: false,
     },
