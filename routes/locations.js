@@ -10,18 +10,19 @@ const {
   updateLocation,
   deleteLocation,
 } = require('../controllers/locations')
+const asyncHandler = require('../middleware/async')
 
 router
   .route('/')
-  .get(getLocations)
-  .post(validator(validateLocation), createLocation)
+  .get(asyncHandler(getLocations))
+  .post(validator(validateLocation), asyncHandler(createLocation))
 
 router
   // .all('/:id', validateObjectId)
   .route('/:id')
-  .get(getLocation)
-  .patch(validator(validateLocation), updateLocation)
-  .delete(deleteLocation)
+  .get(asyncHandler(getLocation))
+  .patch(validator(validateLocation), asyncHandler(updateLocation))
+  .delete(asyncHandler(deleteLocation))
 
 
 module.exports = router
