@@ -1,11 +1,22 @@
+const ErrorResponse = require('../utils/errorResponse')
+
 module.exports = (err, req, res, next) => {
+  let error = { ...err }
+
+  error.message = err.message
+
   // log error to console
   console.log(err.stack.red)
 
-  // invalid ObjectId
-  if (err.name === 'CastError')
-  res.status(err.statusCode || 500).json({
+  // invalid mongoDB ObjectId
+  if (err.name === 'CastError') {
+    const message = `Invalid ObjectId: ${ err.value }`
+    error = new ErrorResponse(message, 404)
+  }
+
+
+  res.status(error.statusCode || 500).json({
     success: false,
-    error: err.message || 'Server Error',
+    error: error.message || 'Server Error',
   })
 }

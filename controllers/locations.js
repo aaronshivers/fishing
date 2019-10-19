@@ -83,7 +83,13 @@ exports.updateLocation = async (req, res, next) => {
     const location = await Location.findByIdAndUpdate(_id, data)
 
     // return 400 if location was not updated
-    if (!location) return res.status(400).json({ success: false })
+
+    // return 404 if location is not found
+    if (!location) {
+      return next(
+        new ErrorResponse(`Location not found with id of ${ id }`, 404)
+      )
+    }
 
     // return data
     return res.status(200).json({ success: true, location })
@@ -107,8 +113,12 @@ exports.deleteLocation = async (req, res, next) => {
     // update location
     const location = await Location.findByIdAndDelete(id)
 
-    // return 400 if location was not found
-    if (!location) return res.status(400).json({ success: false })
+    // return 404 if location is not found
+    if (!location) {
+      return next(
+        new ErrorResponse(`Location not found with id of ${ id }`, 404)
+      )
+    }
 
     // return data
     return res.status(200).json({ success: true, location })
