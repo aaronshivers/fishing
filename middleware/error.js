@@ -6,7 +6,7 @@ module.exports = (err, req, res, next) => {
   error.message = err.message
 
   // log error to console
-  console.log(err.stack.red)
+  console.log(err)
 
   // invalid mongoDB ObjectId
   if (err.name === 'CastError') {
@@ -14,6 +14,11 @@ module.exports = (err, req, res, next) => {
     error = new ErrorResponse(message, 404)
   }
 
+  // duplicate mongoDB key
+  if (err.code === 11000) {
+    const message = `Duplicate field entered`
+    error = new ErrorResponse(message, 400)
+  }
 
   res.status(error.statusCode || 500).json({
     success: false,

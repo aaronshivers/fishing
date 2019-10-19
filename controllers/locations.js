@@ -62,8 +62,7 @@ exports.createLocation = async (req, res, next) => {
     })
   } catch (e) {
 
-    // return 400 on error
-    res.status(400).json({ success: false })
+    next(e)
   }
 }
 
