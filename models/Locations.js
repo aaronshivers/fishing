@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const slugify = require('slugify')
 
 module.exports = LocationSchema = new mongoose.Schema({
     name: {
@@ -99,6 +100,12 @@ module.exports = LocationSchema = new mongoose.Schema({
     },
   },
 )
+
+// create location slug from name
+LocationSchema.pre('save', function () {
+  this.slug = slugify(this.name, {lower: true})
+  next()
+})
 
 module.exports = mongoose.model('Location', LocationSchema)
 
