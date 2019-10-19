@@ -20,6 +20,12 @@ module.exports = (err, req, res, next) => {
     error = new ErrorResponse(message, 400)
   }
 
+  // mongoDB validation error
+  if (err.name === 'ValidationError') {
+    const message = err.details[0].message
+    error = new ErrorResponse(message, 400)
+  }
+
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || 'Server Error',
