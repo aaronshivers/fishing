@@ -17,7 +17,7 @@ router
   .post(validator(validateLocation), createLocation)
 
 router
-  .all('/:id', validateObjectId)
+  // .all('/:id', validateObjectId)
   .route('/:id')
   .get(getLocation)
   .patch(validator(validateLocation), updateLocation)

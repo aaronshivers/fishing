@@ -43,7 +43,7 @@ exports.getLocation = async (req, res, next) => {
   } catch (e) {
 
     // return 400 on error
-    next(new ErrorResponse(`Error`, 400))
+    next(e)
   }
 
 }

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=development && node app.js",
     "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test && jest --forceExit --detectOpenHandles --runInBand"
   },
   "keywords": [],
   "author": "aaron shivers",
@@ -15,12 +15,17 @@
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "mongodb": "latest",
     "mongoose": "^5.7.5",
-    "morgan": "^1.9.1",
-    "mongodb": "latest"
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@hapi/joi": "^16.1.7",
-    "nodemon": "^1.19.4"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

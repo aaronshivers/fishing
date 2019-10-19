@@ -28,7 +28,9 @@ app.use(errorHandler)
 // connect to server
 const server = app.listen(
   PORT, () => {
-    console.log(`Server running in ${ environment } mode on port ${ PORT }`.yellow.bold)
+    console.log(
+      `Server running in ${ environment } mode on port ${ PORT }`.yellow.bold,
+    )
   },
 )
 
@@ -37,3 +39,5 @@ process.on('unhandledRejection', (error) => {
   console.log(`Error: ${ error.message }`.red)
   server.close(() => process.exit(1))
 })
+
+module.exports = {server}
