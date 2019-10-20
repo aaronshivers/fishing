@@ -6,9 +6,9 @@ const locations = require('../_data/locations')
 describe('/api/v1/locations', () => {
 
   // locationZero
-  const locationZero = locations[0]
+  const { _id: idZero, user: userZero, ...locationZero } = locations[0]
   // locationOne
-  const locationOne = locations[1]
+  const { _id: idOne, user: userOne, ...locationOne } = locations[1]
 
 
   beforeEach(async () => {
@@ -21,37 +21,125 @@ describe('/api/v1/locations', () => {
 
     // save locations
     await new LocationSchema(locationZero).save()
-    await new LocationSchema(locationOne).save()
+    // await new LocationSchema(locationOne).save()
   })
 
+  // initialize response variable
+  let response
 
   // GET /api/v1/locations
-  describe('GET /api/v1/locations',  () => {
+  describe('GET /api/v1/locations', () => {
 
-    it('should respond 200, and return all locations', async () => {
-
-      request(server)
+    // make GET request
+    beforeEach(() => {
+      response = request(server)
         .get('/api/v1/locations')
-        .expect(200)
+    })
+
+    it('should respond 200', async () => await response.expect(200))
+
+    it('should find 1 entry', async () => {
 
       const foundLocations = await LocationSchema.find()
-      expect(foundLocations.length).toBe(2)
+      expect(foundLocations.length).toBe(1)
     })
   })
 
   // GET /api/v1/locations
   describe('POST /api/v1/locations', () => {
 
-    it('should respond 400 if no data is provided', async () => {
-
-      request(server)
+    beforeEach(() => {
+      response = request(server)
         .post('/api/v1/locations')
-        .send()
-        .expect(400)
+    })
 
-      const foundLocations = await LocationSchema.find()
-      expect(foundLocations.length).toBe(2)
+    describe('and no data is passed', () => {
+
+      it('should respond 400', async () => {
+
+        await response
+          .send()
+          .expect(400)
+      })
+
+      it('should find 1 location', async () => {
+
+        await response
+          .send()
+
+        const foundLocations = await LocationSchema.find()
+        expect(foundLocations.length).toBe(1)
+      })
+    })
+
+    // TODO: create test
+    describe('and invalid data is passed', () => {
+    })
+
+    describe('and valid data is passed', () => {
+
+      describe('and the entry already exists', () => {
+
+        it('should respond 400', async () => {
+
+          await response
+            .send(locationZero)
+            .expect(400)
+        })
+
+        it('should find 1 location', async () => {
+
+          await response
+            .send(locationZero)
+
+          const foundLocations = await LocationSchema.find()
+          expect(foundLocations.length).toBe(1)
+        })
+      })
+
+      describe('and the entry does not already exists', () => {
+
+        it('should respond 201', async () => {
+
+          await response
+            .send(locationOne)
+            .expect(201)
+        })
+
+        it('should find 2 entries', async () => {
+
+          await response
+            .send(locationOne)
+
+          const foundLocations = await LocationSchema.find()
+          expect(foundLocations.length).toBe(2)
+        })
+      })
     })
   })
 
+  // TODO: complete tests
+  describe('DELETE /api/v1/locations/:id', () => {
+
+    beforeEach(() => {
+      response = request(server)
+        .delete('/api/v1/locations/:id')
+    })
+
+    describe('and the id is invalid', () => {
+
+      it('should respond 400', async () => {
+      })
+      it('should not delete anything', async () => {
+      })
+    })
+
+    describe('and the id is valid', () => {
+
+      it('should respond 201', async () => {
+      })
+      it('should delete the entry with the specified id', async () => {
+      })
+    })
+  })
 })
