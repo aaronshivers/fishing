@@ -24,11 +24,13 @@ describe('/api/v1/locations', () => {
     await new LocationSchema(locationOne).save()
   })
 
-  describe('GET /api/v1/locations', () => {
+
+  // GET /api/v1/locations
+  describe('GET /api/v1/locations',  () => {
 
     it('should respond 200, and return all locations', async () => {
 
-      await request(server)
+      request(server)
         .get('/api/v1/locations')
         .expect(200)
 
@@ -36,4 +38,20 @@ describe('/api/v1/locations', () => {
       expect(foundLocations.length).toBe(2)
     })
   })
+
+  // GET /api/v1/locations
+  describe('POST /api/v1/locations', () => {
+
+    it('should respond 400 if no data is provided', async () => {
+
+      request(server)
+        .post('/api/v1/locations')
+        .send()
+        .expect(400)
+
+      const foundLocations = await LocationSchema.find()
+      expect(foundLocations.length).toBe(2)
+    })
+  })
+
 })
