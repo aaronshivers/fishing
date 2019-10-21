@@ -2,6 +2,7 @@ const request = require('supertest')
 const { server } = require('../app')
 const LocationSchema = require('../models/Locations')
 const locations = require('../_data/locations')
+const {ObjectID} = require('mongodb')
 
 describe('/api/v1/locations', () => {
 
@@ -121,24 +122,57 @@ describe('/api/v1/locations', () => {
   // TODO: complete tests
   describe('DELETE /api/v1/locations/:id', () => {
 
-    beforeEach(() => {
-      response = request(server)
-        .delete('/api/v1/locations/:id')
-    })
-
     describe('and the id is invalid', () => {
 
-      it('should respond 400', async () => {
+      beforeEach(() => {
+        response = request(server)
+          .delete('/api/v1/locations/1234')
       })
+
+      it('should respond 404', async () => response.expect(404))
+
       it('should not delete anything', async () => {
+
+        const foundLocations = await LocationSchema.find()
+        expect(foundLocations.length).toBe(1)
       })
     })
 
     describe('and the id is valid', () => {
 
-      it('should respond 201', async () => {
+      describe('and the ID is not in the DB', () => {
+
+        beforeEach(() => {
+          response = request(server)
+            .delete(`/api/v1/locations/${ new ObjectID }`)
+        })
+
+        it('should respond 404', async () => response.expect(404))
+
+        it('should not delete anything', async () => {
+
+          const foundLocations = await LocationSchema.find()
+          expect(foundLocations.length).toBe(1)
+        })
       })
-      it('should delete the entry with the specified id', async () => {
+
+      describe('and the ID is in the DB', () => {
+
+        beforeEach(async () => {
+          response = request(server)
+            .delete(`/api/v1/locations/${idZero}`)
+          console.log(idZero)
+          const foundLocations = await LocationSchema.find()
+          console.log(foundLocations)
+        })
+
+        it('should respond 201', async () => response.expect(201))
+
+        it('should delete the entry with the specified id', async () => {
+
+          const foundLocations = await LocationSchema.find()
+          expect(foundLocations.length).toBe(0)
+        })
       })
     })
   })
