@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const slugify = require('slugify')
+const geoCoder = require('../utils/geoCoder')
 
 module.exports = LocationSchema = new mongoose.Schema({
     name: {
@@ -102,8 +103,43 @@ module.exports = LocationSchema = new mongoose.Schema({
 )
 
 // create location slug from name
-LocationSchema.pre('save', function () {
-  this.slug = slugify(this.name, {lower: true})
+LocationSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true })
+  next()
+})
+
+// geocode & create location fields
+LocationSchema.pre('save', async function (next) {
+  const location = await geoCoder(this.address)
+
+  const {
+    longitude,
+    latitude,
+    formattedAddress,
+    street,
+    city,
+    state,
+    zipCode,
+    country,
+  } = location
+
+  this.location = {
+    type: 'Point',
+    coordinates: [
+      longitude,
+      latitude,
+    ],
+    formattedAddress,
+    street,
+    city,
+    state,
+    zipCode,
+    country,
+  }
+
+  // clear address
+  this.address = undefined
+
   next()
 })
 
