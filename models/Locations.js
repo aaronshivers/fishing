@@ -61,8 +61,11 @@ module.exports = LocationSchema = new mongoose.Schema({
       required: true,
       enum: [
         'Black Bass',
+        'Bluegill',
         'Catfish',
+        'Channel Catfish',
         'Crappie',
+        'Largemouth Bass',
         'Sunfish',
         'Walleye/Sauger',
         'White Bass',
