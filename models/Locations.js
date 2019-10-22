@@ -64,7 +64,7 @@ module.exports = LocationSchema = new mongoose.Schema({
         'Bluegill',
         'Catfish',
         'Channel Catfish',
-        'Crappie',
+        'crappie',
         'Largemouth Bass',
         'Sunfish',
         'Walleye/Sauger',

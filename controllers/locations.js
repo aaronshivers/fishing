@@ -6,7 +6,12 @@ const Location = require('../models/Locations')
 // @route   GET /api/v1/locations
 // @access  Public
 exports.getLocations = async (req, res, next) => {
-  const locations = await Location.find()
+  const queryString = JSON
+    .stringify(req.query)
+    .toLowerCase()
+    .replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${ match }`)
+
+  const locations = await Location.find(JSON.parse(queryString))
 
   res.status(200).json({
     success: true,
@@ -111,7 +116,12 @@ exports.getLocationsInRadius = async (req, res, next) => {
 
   const radius = distance / 3963.2
 
-  const area = { center: [ longitude, latitude ], radius, unique: true, spherical: true }
+  const area = {
+    center: [ longitude, latitude ],
+    radius,
+    unique: true,
+    spherical: true,
+  }
   const locations = await Location.where('location').within().circle(area)
 
   // return data

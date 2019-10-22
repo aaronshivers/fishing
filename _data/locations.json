@@ -11,7 +11,7 @@
     "fish": [
       "Black Bass",
       "Catfish",
-      "Crappie",
+      "crappie",
       "Sunfish",
       "Walleye/Sauger",
       "White Bass"
@@ -19,7 +19,8 @@
     "camping": true,
     "boatLanding": true,
     "fishingDock": true,
-    "disabledAccessible": true
+    "disabledAccessible": true,
+    "averageCost": 10000
   },
   {
     "_id": "5d713a66ec8f2b88b8f830b8",
@@ -33,13 +34,14 @@
     "fish": [
       "Black Bass",
       "Catfish",
-      "Crappie",
+      "crappie",
       "Sunfish"
     ],
     "camping": false,
     "boatLanding": true,
     "fishingDock": false,
-    "disabledAccessible": true
+    "disabledAccessible": true,
+    "averageCost": 12000
   },
   {
     "_id": "5d725a037b292f5f8ceff787",
@@ -58,7 +60,8 @@
     "camping": true,
     "boatLanding": true,
     "fishingDock": false,
-    "disabledAccessible": false
+    "disabledAccessible": false,
+    "averageCost": 8000
   },
   {
     "_id": "5d725a1b7b292f5f8ceff788",
@@ -77,6 +80,7 @@
     "camping": false,
     "boatLanding": false,
     "fishingDock": true,
-    "disabledAccessible": true
+    "disabledAccessible": true,
+    "averageCost": 5000
   }
 ]
