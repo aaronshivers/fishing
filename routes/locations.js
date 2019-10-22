@@ -9,8 +9,11 @@ const {
   createLocation,
   updateLocation,
   deleteLocation,
+  getLocationsInRadius,
 } = require('../controllers/locations')
 const asyncHandler = require('../middleware/async')
+
+router.route('/radius/:zipcode/:distance').get(getLocationsInRadius)
 
 router
   .route('/')
@@ -18,7 +21,7 @@ router
   .post(validator(validateLocation), asyncHandler(createLocation))
 
 router
-  // .all('/:id', validateObjectId)
+// .all('/:id', validateObjectId)
   .route('/:id')
   .get(asyncHandler(getLocation))
   .patch(validator(validateLocation), asyncHandler(updateLocation))

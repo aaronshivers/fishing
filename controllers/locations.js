@@ -1,4 +1,5 @@
 const ErrorResponse = require('../utils/errorResponse')
+const geoCoder = require('../utils/geoCoder')
 const Location = require('../models/Locations')
 
 // @desc    Get all locations
@@ -94,4 +95,29 @@ exports.deleteLocation = async (req, res, next) => {
 
   // return data
   return res.status(200).json({ success: true, location })
+}
+
+// @desc    get locations within a radius
+// @route   GET /api/v1/locations/radius/:zipcode/:distance
+// @access  Private
+exports.getLocationsInRadius = async (req, res, next) => {
+
+  // get zipcode and distance
+  const { zipcode, distance } = req.params
+
+  // update location
+  const location = await geoCoder(zipcode)
+  const { latitude, longitude } = location
+
+  const radius = distance / 3963.2
+
+  const area = { center: [ longitude, latitude ], radius, unique: true, spherical: true }
+  const locations = await Location.where('location').within().circle(area)
+
+  // return data
+  return res.status(200).json({
+    success: true,
+    count: locations.length,
+    locations,
+  })
 }

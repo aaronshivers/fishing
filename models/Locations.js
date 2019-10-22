@@ -52,7 +52,7 @@ module.exports = LocationSchema = new mongoose.Schema({
       street: String,
       city: String,
       state: String,
-      zipCode: String,
+      zipcode: String,
       country: String,
     },
     fish: {
